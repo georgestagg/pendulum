@@ -1,5 +1,5 @@
 var scene, camera, renderer,controls;
-var geometry, material, particles;
+var geometry, geometryline,geometryline2, line,material,linematerial, particles;
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
 var stats;
@@ -7,6 +7,8 @@ var filterStrength = 20;
 var frameTime = 0, lastLoop = new Date, thisLoop;
 var fps = 0;
 var iters = 1000;
+var MAX_LINE_POINTS = 500;
+var trailj = MAX_LINE_POINTS, traili = 0;
 initSinglePendulum();
 init();
 animate();
@@ -25,10 +27,26 @@ function init() {
     vertex.z = 0.0;
     geometry.vertices.push( vertex );
 
+    //make vertices for the line
+    var geometryline = new THREE.Geometry();
+    P1 = getSinglePendulumP1();
+    for (var i = 0; i <= MAX_LINE_POINTS; i++) {
+        geometryline.vertices.push(new THREE.Vector3(P1[0], P1[2], -P1[1]));
+    };
+    var geometryline2 = new THREE.Geometry();
+    for (var i = 0; i <= MAX_LINE_POINTS; i++) {
+        geometryline2.vertices.push(new THREE.Vector3(P1[0], P1[2], -P1[1]));
+    };
+
     color = [1,1,1];
-    material = new THREE.PointsMaterial( { size: 1, map:textureLoader.load("particle.png"),blending: THREE.AdditiveBlending} );
+    linematerial = new THREE.LineBasicMaterial({color: 0x00AA00});
+    material = new THREE.PointsMaterial( { size: 0.5,blending: THREE.AdditiveBlending} );
     particles = new THREE.Points( geometry, material );
+    line = new THREE.Line(geometryline, linematerial);
+    line2 = new THREE.Line(geometryline2, linematerial);
     scene.add( particles );
+    scene.add(line);
+    scene.add(line2);
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
@@ -74,7 +92,38 @@ function animate() {
     scene.children[0].position.x = P1[0];
     scene.children[0].position.y = P1[2];
     scene.children[0].position.z = -P1[1];
-    
+    for (var i = traili++; i <= MAX_LINE_POINTS; i++) {
+        scene.children[1].geometry.vertices[i].x = P1[0];
+        scene.children[1].geometry.vertices[i].y = P1[2];
+        scene.children[1].geometry.vertices[i].z = -P1[1];
+    };
+
+    for (var i = 0; i < Math.max(0,traili-MAX_LINE_POINTS) ; i++) {
+        scene.children[1].geometry.vertices[i].x = scene.children[1].geometry.vertices[traili-MAX_LINE_POINTS].x;
+        scene.children[1].geometry.vertices[i].y = scene.children[1].geometry.vertices[traili-MAX_LINE_POINTS].y;
+        scene.children[1].geometry.vertices[i].z = scene.children[1].geometry.vertices[traili-MAX_LINE_POINTS].z;
+    };
+
+    for (var i = trailj++; i <= MAX_LINE_POINTS; i++) {
+        scene.children[2].geometry.vertices[i].x = P1[0];
+        scene.children[2].geometry.vertices[i].y = P1[2];
+        scene.children[2].geometry.vertices[i].z = -P1[1];
+    };
+
+    for (var i = 0; i < Math.max(0,trailj-MAX_LINE_POINTS) ; i++) {
+        scene.children[2].geometry.vertices[i].x = scene.children[2].geometry.vertices[trailj-MAX_LINE_POINTS].x;
+        scene.children[2].geometry.vertices[i].y = scene.children[2].geometry.vertices[trailj-MAX_LINE_POINTS].y;
+        scene.children[2].geometry.vertices[i].z = scene.children[2].geometry.vertices[trailj-MAX_LINE_POINTS].z;
+    };
+
+    scene.children[1].geometry.verticesNeedUpdate = true;
+    scene.children[2].geometry.verticesNeedUpdate = true;
+    if(traili == 2*MAX_LINE_POINTS){
+        traili = 0;
+    }
+    if(trailj == 2*MAX_LINE_POINTS){
+        trailj = 0;
+    }
     var thisFrameTime = (thisLoop=new Date) - lastLoop;
     frameTime+= (thisFrameTime - frameTime) / filterStrength;
     lastLoop = thisLoop;

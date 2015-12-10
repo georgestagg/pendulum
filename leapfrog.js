@@ -1,5 +1,5 @@
 var fixedPoint = [0,30.0,0];
-var g = 1.0
+var g = 3.0
 var mass1,mass2,mass3;
 var length1,length2,length3;
 var phi1,vphi1;
@@ -9,9 +9,9 @@ function initSinglePendulum() {
 	mass1 = 1.0;
 	length1 = 10.0;
 	theta1 = 1.0;
-	phi1 = 2.0;
-	vtheta1 = 0.0;
-	vphi1 = 0.0;
+	phi1 = 0.0;
+	vtheta1 = 0.1;
+	vphi1 = 0.1;
 }
 
 function rhsSinglePendulum() {
