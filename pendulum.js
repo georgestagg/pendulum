@@ -6,7 +6,7 @@ var stats;
 var filterStrength = 20;
 var frameTime = 0, lastLoop = new Date, thisLoop;
 var fps = 0;
-var iters = 1000;
+var iters = 5000;
 var MAX_LINE_POINTS = 500;
 var trailj = MAX_LINE_POINTS, traili = 0;
 initSinglePendulum();
@@ -39,24 +39,42 @@ function init() {
     };
 
     color = [1,1,1];
-    linematerial = new THREE.LineBasicMaterial({color: 0x00AA00});
-    material = new THREE.PointsMaterial( { size: 0.5,blending: THREE.AdditiveBlending} );
+    linematerial = new THREE.LineBasicMaterial({color: 0xFFC200,linewidth: 2});
+    material = new THREE.PointsMaterial( { size: 1,transparent: true,map: textureLoader.load("particle.png"),blending: THREE.AdditiveBlending} );
     particles = new THREE.Points( geometry, material );
     line = new THREE.Line(geometryline, linematerial);
     line2 = new THREE.Line(geometryline2, linematerial);
     scene.add( particles );
     scene.add(line);
     scene.add(line2);
-    renderer = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer({ antialias: false });
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.autoClear = false;
     document.body.appendChild( renderer.domElement );
 
 
-    controls = new THREE.TrackballControls( camera, renderer.domElement );
-        controls.minDistance = 0;
-        controls.maxDistance = 100;
+    controls = new THREE.OrbitControls( camera, renderer.domElement );
+    //controls.addEventListener( 'change', render ); // add this only if there is no animation loop (requestAnimationFrame)
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+    controls.enableZoom = false;
 
+    var renderModel = new THREE.RenderPass( scene, camera );
+    var effectBloom = new THREE.BloomPass( 2.0 );
+    var effectCopy = new THREE.ShaderPass( THREE.CopyShader );
+    var effectFXAA = new THREE.ShaderPass( THREE.FXAAShader );
+
+    var width = window.innerWidth || 2;
+    var height = window.innerHeight || 2;
+    effectFXAA.uniforms[ 'resolution' ].value.set( 1 / width, 1 / height );
+    effectCopy.renderToScreen = true;
+
+    composer = new THREE.EffectComposer( renderer );
+    composer.addPass( renderModel );
+    composer.addPass( effectFXAA );
+    composer.addPass( effectBloom );
+    composer.addPass( effectCopy );
 
 
     window.addEventListener( 'resize', onWindowResize, false );
@@ -135,7 +153,9 @@ function animate() {
 
     //camera.lookAt( scene.position );
     controls.update();
-    renderer.render( scene, camera );
+    renderer.clear();
+    composer.render();
+    //renderer.render( scene, camera );
 
 }
 

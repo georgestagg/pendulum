@@ -3,22 +3,26 @@ var g = 3.0
 var mass1,mass2,mass3;
 var length1,length2,length3;
 var phi1,vphi1;
-var dt = 0.0001;
+var dt = 0.00002;
 var theta1,vtheta1;
 function initSinglePendulum() {
 	mass1 = 1.0;
 	length1 = 10.0;
-	theta1 = 1.0;
-	phi1 = 0.0;
-	vtheta1 = 0.1;
-	vphi1 = 0.1;
+	theta1 = 0.0;
+	phi1 = 0.5;
+	vtheta1 = 2.0;
+	vphi1 = 0.0;
 }
 
 function rhsSinglePendulum() {
 	dtheta1 = vtheta1;
 	dphi1 = vphi1;
 	ddtheta1 = dphi1*dphi1*Math.sin(theta1)*Math.cos(theta1) - (g/length1)*Math.sin(theta1);
-	ddphi1 = -2*dphi1*dtheta1*Math.cos(theta1)/Math.sin(theta1);
+	if(theta1 == 0){
+		ddphi1 = 0
+	} else {
+		ddphi1 = -2*dphi1*dtheta1*Math.cos(theta1)/Math.sin(theta1);
+	}
 	return [ddtheta1,ddphi1];
 }
 function updateSinglePendulum() {

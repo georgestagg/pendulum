@@ -1,0 +1,44 @@
+︠ca2b74d8-d60a-4921-831d-8781240d3526s︠
+var('l1,l2,m1,m2,t,g')
+theta1 = function("theta1",t)
+theta2 = function("theta2",t)
+phi1 = function("phi1",t)
+phi2 = function("phi2",t)
+x1 = l1*sin(theta1)*cos(phi1)
+y1 = l1*sin(theta1)*sin(phi1)
+z1 = -l1*cos(theta1)
+x2 = x1 + l2*sin(theta2)*cos(phi2)
+y2 = y1 + l2*sin(theta2)*cos(phi2)
+z2 = z1 - l2*cos(theta2)
+
+x1dot = x1.derivative(t)
+y1dot = y1.derivative(t)
+z1dot = z1.derivative(t)
+x2dot = x2.derivative(t)
+y2dot = y2.derivative(t)
+z2dot = z2.derivative(t)
+
+v1sq = (x1dot*x1dot) + (y1dot*y1dot) + (z1dot*z1dot)
+v2sq = (x2dot*x2dot) + (y2dot*y2dot) + (z2dot*z2dot)
+
+Ek = 0.5*(m1*v1sq + m2*v2sq)
+Ep = m1*g*z1 + m2*g*z2
+L = Ek-Ep
+
+var('theta1dot,theta2dot,phi1dot,phi2dot')
+Ltmp = g*l1*m1*cos(theta1) + (l1*cos(theta1) + l2*cos(theta2))*g*m2 + (1/2)*(l1^2*sin(theta1)^2*theta1dot^2 + (l1*cos(phi1)*sin(theta1)*phi1dot + l1*cos(theta1)*sin(phi1)*theta1dot)^2 + (l1*sin(phi1)*sin(theta1)*phi1dot - l1*cos(phi1)*cos(theta1)*theta1dot)^2)*m1 + (1/2)*((l1*cos(phi1)*sin(theta1)*phi1dot - l2*sin(phi2)*sin(theta2)*phi2dot + l1*cos(theta1)*sin(phi1)*theta1dot + l2*cos(phi2)*cos(theta2)*theta2dot)^2 + (l1*sin(phi1)*sin(theta1)*phi1dot + l2*sin(phi2)*sin(theta2)*phi2dot - l1*cos(phi1)*cos(theta1)*theta1dot - l2*cos(phi2)*cos(theta2)*theta2dot)^2 + (l1*sin(theta1)*theta1dot + l2*sin(theta2)*theta2dot)^2)*m2
+︡8e3d8d18-9a01-46c4-9cd0-dbcbafd31891︡︡{"stdout":"(l1, l2, m1, m2, t, g)\n","done":false}︡{"stdout":"(theta1dot, theta2dot, phi1dot, phi2dot)\n","done":false}︡{"done":true}
+︠5ec1506e-742b-43a7-8768-de8eb8e236b4s︠
+diff(diff(Ltmp, theta1dot).subs(theta1dot=diff(theta1)),t)
+︡e8243c72-ed6c-45a3-8444-8fbd18564dd0︡︡{"stdout":"(2*l1^2*cos(theta1(t))*sin(theta1(t))*D[0](theta1)(t)^2 + (l1*phi1dot*cos(phi1(t))*sin(theta1(t)) + l1*cos(theta1(t))*sin(phi1(t))*D[0](theta1)(t))*l1*cos(phi1(t))*cos(theta1(t))*D[0](phi1)(t) + (l1*phi1dot*sin(phi1(t))*sin(theta1(t)) - l1*cos(phi1(t))*cos(theta1(t))*D[0](theta1)(t))*l1*cos(theta1(t))*sin(phi1(t))*D[0](phi1)(t) + (l1*phi1dot*sin(phi1(t))*sin(theta1(t)) - l1*cos(phi1(t))*cos(theta1(t))*D[0](theta1)(t))*l1*cos(phi1(t))*sin(theta1(t))*D[0](theta1)(t) - (l1*phi1dot*cos(phi1(t))*sin(theta1(t)) + l1*cos(theta1(t))*sin(phi1(t))*D[0](theta1)(t))*l1*sin(phi1(t))*sin(theta1(t))*D[0](theta1)(t) + l1^2*sin(theta1(t))^2*D[0, 0](theta1)(t) - (l1*phi1dot*cos(phi1(t))*sin(theta1(t))*D[0](phi1)(t) + l1*phi1dot*cos(theta1(t))*sin(phi1(t))*D[0](theta1)(t) + l1*cos(theta1(t))*sin(phi1(t))*D[0](phi1)(t)*D[0](theta1)(t) + l1*cos(phi1(t))*sin(theta1(t))*D[0](theta1)(t)^2 - l1*cos(phi1(t))*cos(theta1(t))*D[0, 0](theta1)(t))*l1*cos(phi1(t))*cos(theta1(t)) - (l1*phi1dot*sin(phi1(t))*sin(theta1(t))*D[0](phi1)(t) - l1*phi1dot*cos(phi1(t))*cos(theta1(t))*D[0](theta1)(t) - l1*cos(phi1(t))*cos(theta1(t))*D[0](phi1)(t)*D[0](theta1)(t) + l1*sin(phi1(t))*sin(theta1(t))*D[0](theta1)(t)^2 - l1*cos(theta1(t))*sin(phi1(t))*D[0, 0](theta1)(t))*l1*cos(theta1(t))*sin(phi1(t)))*m1 + ((l2*theta2dot*cos(phi2(t))*cos(theta2(t)) + l1*phi1dot*cos(phi1(t))*sin(theta1(t)) - l2*phi2dot*sin(phi2(t))*sin(theta2(t)) + l1*cos(theta1(t))*sin(phi1(t))*D[0](theta1)(t))*l1*cos(phi1(t))*cos(theta1(t))*D[0](phi1)(t) - (l2*theta2dot*cos(phi2(t))*cos(theta2(t)) - l1*phi1dot*sin(phi1(t))*sin(theta1(t)) - l2*phi2dot*sin(phi2(t))*sin(theta2(t)) + l1*cos(phi1(t))*cos(theta1(t))*D[0](theta1)(t))*l1*cos(theta1(t))*sin(phi1(t))*D[0](phi1)(t) - (l2*theta2dot*cos(phi2(t))*cos(theta2(t)) - l1*phi1dot*sin(phi1(t))*sin(theta1(t)) - l2*phi2dot*sin(phi2(t))*sin(theta2(t)) + l1*cos(phi1(t))*cos(theta1(t))*D[0](theta1)(t))*l1*cos(phi1(t))*sin(theta1(t))*D[0](theta1)(t) - (l2*theta2dot*cos(phi2(t))*cos(theta2(t)) + l1*phi1dot*cos(phi1(t))*sin(theta1(t)) - l2*phi2dot*sin(phi2(t))*sin(theta2(t)) + l1*cos(theta1(t))*sin(phi1(t))*D[0](theta1)(t))*l1*sin(phi1(t))*sin(theta1(t))*D[0](theta1)(t) - (l1*phi1dot*cos(phi1(t))*sin(theta1(t))*D[0](phi1)(t) + l2*theta2dot*cos(theta2(t))*sin(phi2(t))*D[0](phi2)(t) + l2*phi2dot*cos(phi2(t))*sin(theta2(t))*D[0](phi2)(t) + l1*phi1dot*cos(theta1(t))*sin(phi1(t))*D[0](theta1)(t) + l1*cos(theta1(t))*sin(phi1(t))*D[0](phi1)(t)*D[0](theta1)(t) + l1*cos(phi1(t))*sin(theta1(t))*D[0](theta1)(t)^2 + l2*phi2dot*cos(theta2(t))*sin(phi2(t))*D[0](theta2)(t) + l2*theta2dot*cos(phi2(t))*sin(theta2(t))*D[0](theta2)(t) - l1*cos(phi1(t))*cos(theta1(t))*D[0, 0](theta1)(t))*l1*cos(phi1(t))*cos(theta1(t)) - (l1*phi1dot*sin(phi1(t))*sin(theta1(t))*D[0](phi1)(t) + l2*theta2dot*cos(theta2(t))*sin(phi2(t))*D[0](phi2)(t) + l2*phi2dot*cos(phi2(t))*sin(theta2(t))*D[0](phi2)(t) - l1*phi1dot*cos(phi1(t))*cos(theta1(t))*D[0](theta1)(t) - l1*cos(phi1(t))*cos(theta1(t))*D[0](phi1)(t)*D[0](theta1)(t) + l1*sin(phi1(t))*sin(theta1(t))*D[0](theta1)(t)^2 + l2*phi2dot*cos(theta2(t))*sin(phi2(t))*D[0](theta2)(t) + l2*theta2dot*cos(phi2(t))*sin(theta2(t))*D[0](theta2)(t) - l1*cos(theta1(t))*sin(phi1(t))*D[0, 0](theta1)(t))*l1*cos(theta1(t))*sin(phi1(t)) + (l2*theta2dot*sin(theta2(t)) + l1*sin(theta1(t))*D[0](theta1)(t))*l1*cos(theta1(t))*D[0](theta1)(t) + (l1*cos(theta1(t))*D[0](theta1)(t)^2 + l2*theta2dot*cos(theta2(t))*D[0](theta2)(t) + l1*sin(theta1(t))*D[0, 0](theta1)(t))*l1*sin(theta1(t)))*m2\n","done":false}︡{"done":true}
+︠c553970a-e9c6-4337-8201-5bb1547ad069︠
+
+
+
+
+
+
+
+
+
+
