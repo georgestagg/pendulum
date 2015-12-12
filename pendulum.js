@@ -145,18 +145,9 @@ function animate() {
     var thisFrameTime = (thisLoop=new Date) - lastLoop;
     frameTime+= (thisFrameTime - frameTime) / filterStrength;
     lastLoop = thisLoop;
-
-
-    
-    //camera.position.x = 50*Math.sin(time*mouseX*0.005);
-    //camera.position.z = 50*Math.cos(time*mouseY*0.005);
-
-    //camera.lookAt( scene.position );
     controls.update();
     renderer.clear();
     composer.render();
-    //renderer.render( scene, camera );
-
 }
 
 function onWindowResize() {
