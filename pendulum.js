@@ -6,17 +6,17 @@ var stats;
 var filterStrength = 20;
 var frameTime = 0, lastLoop = new Date, thisLoop;
 var fps = 0;
-var iters = 5000;
+var iters = 1000;
 var MAX_LINE_POINTS = 500;
 var trailj = MAX_LINE_POINTS, traili = 0;
-initSinglePendulum();
+initDoublePendulum();
 init();
 animate();
 
 function init() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-    camera.position.z = 20;
+    camera.position.z = 30;
     textureLoader = new THREE.TextureLoader();
 
     //make particles for the masses
@@ -25,6 +25,11 @@ function init() {
     vertex.x = 0.0;
     vertex.y = 0.0;
     vertex.z = 0.0;
+    geometry.vertices.push( vertex );
+    vertex = new THREE.Vector3();
+    vertex.x = 1.0;
+    vertex.y = 2.0;
+    vertex.z = 3.0;
     geometry.vertices.push( vertex );
 
     //make vertices for the line
@@ -38,7 +43,6 @@ function init() {
         geometryline2.vertices.push(new THREE.Vector3(P1[0], P1[2], -P1[1]));
     };
 
-    color = [1,1,1];
     linematerial = new THREE.LineBasicMaterial({color: 0xFFC200,linewidth: 2});
     material = new THREE.PointsMaterial( { size: 1,transparent: true,map: textureLoader.load("particle.png"),blending: THREE.AdditiveBlending} );
     particles = new THREE.Points( geometry, material );
@@ -58,7 +62,7 @@ function init() {
     //controls.addEventListener( 'change', render ); // add this only if there is no animation loop (requestAnimationFrame)
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
-    controls.enableZoom = false;
+    controls.enableZoom = true;
 
     var renderModel = new THREE.RenderPass( scene, camera );
     var effectBloom = new THREE.BloomPass( 2.0 );
@@ -80,8 +84,8 @@ function init() {
     window.addEventListener( 'resize', onWindowResize, false );
     setInterval(function(){
         fps = (1000/frameTime).toFixed(1);
-        E1 = getSinglePendulumE();
-        V1 = getSinglePendulumV();
+        E1 = getDoublePendulumE();
+        V1 = getDoublePendulumV1();
         replaceHtml("info", 'FPS: '+ fps + '<br>Iterations/s: '+ iters + '<br>Energy: '+ Math.round(E1*100)/100 + '<br>M1 velocity: ' +  Math.round(V1*100)/100);
         
     },500);
@@ -104,12 +108,16 @@ function replaceHtml(el, html) {
 function animate() {
     requestAnimationFrame( animate );
     for (var i = 0; i < iters; i++) {
-        updateSinglePendulum();
+        updateDoublePendulum();
     };
-    P1 = getSinglePendulumP1();
-    scene.children[0].position.x = P1[0];
-    scene.children[0].position.y = P1[2];
-    scene.children[0].position.z = -P1[1];
+    P1 = getDoublePendulumP1();
+    scene.children[0].geometry.vertices[0].x = P1[0];
+    scene.children[0].geometry.vertices[0].y = P1[2];
+    scene.children[0].geometry.vertices[0].z = -P1[1];
+    P2 = getDoublePendulumP2();
+    scene.children[0].geometry.vertices[1].x = P2[0];
+    scene.children[0].geometry.vertices[1].y = P2[2];
+    scene.children[0].geometry.vertices[1].z = -P2[1];
     for (var i = traili++; i <= MAX_LINE_POINTS; i++) {
         scene.children[1].geometry.vertices[i].x = P1[0];
         scene.children[1].geometry.vertices[i].y = P1[2];
@@ -133,7 +141,7 @@ function animate() {
         scene.children[2].geometry.vertices[i].y = scene.children[2].geometry.vertices[trailj-MAX_LINE_POINTS].y;
         scene.children[2].geometry.vertices[i].z = scene.children[2].geometry.vertices[trailj-MAX_LINE_POINTS].z;
     };
-
+    scene.children[0].geometry.verticesNeedUpdate = true;
     scene.children[1].geometry.verticesNeedUpdate = true;
     scene.children[2].geometry.verticesNeedUpdate = true;
     if(traili == 2*MAX_LINE_POINTS){
