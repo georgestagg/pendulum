@@ -6,7 +6,7 @@ var stats;
 var filterStrength = 20;
 var frameTime = 0, lastLoop = new Date, thisLoop;
 var fps = 0;
-var iters = 5000;
+var iters = 500;
 var MAX_LINE_POINTS = 500;
 var MAX_LINE_POINTS2 = 500;
 var trailj = MAX_LINE_POINTS, traili = 0;
@@ -102,7 +102,7 @@ function init() {
         E1 = getDoublePendulumE();
         V1 = getDoublePendulumV1();
         V2 = getDoublePendulumV2();
-        replaceHtml("info", 'FPS: '+ fps + '<br>Iterations/s: '+ iters +'<br>Energy: ' +  Math.round(E1*100)/100 + '<br>M1 velocity: ' +  Math.round(V1*100)/100 + '<br>M2 velocity: ' +  Math.round(V2*100)/100);
+        replaceHtml("info", 'FPS: '+ fps + '<br>Iterations/frame: '+ iters +'<br>Energy: ' +  Math.round(E1*100)/100 + '<br>M1 velocity: ' +  Math.round(V1*100)/100 + '<br>M2 velocity: ' +  Math.round(V2*100)/100);
         
     },500);
 }
