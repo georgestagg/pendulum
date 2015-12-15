@@ -71,11 +71,19 @@ function initDoublePendulum() {
   theta2  =  params.inittheta2/360 *2* 3.141592;
   vtheta1 =  params.initvtheta1;
   vtheta2 =  params.initvtheta2;
+
+  //try to avoid horrible singularities
   if(theta1 == 0) {
-  	theta1 = 0.0000001;
+  	theta1 = 0.0001;
   }
   if(theta2 == 0) {
-  	theta2 = 0.0000001;
+  	theta2 = 0.0001;
+  }
+   if(theta1 == 180) {
+  	theta1 = 179.999;
+  }
+  if(theta2 == 180) {
+  	theta2 = 189.999;
   }
 }
 
@@ -162,12 +170,6 @@ function rhsSinglePendulum() {
 }
 
 function rhsDoublePendulum() {
-	if(Math.abs(theta1) < 0.0001) {
-  	theta1 = 0.00001;
-  }
-if(Math.abs(theta2) < 0.0001) {
-  	theta2 = 0.00001;
-  }
 	return [DPtheta1dotdot(),DPtheta2dotdot(),DPphi1dotdot(),DPphi2dotdot()];
 }
 
