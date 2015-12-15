@@ -146,14 +146,14 @@ function init() {
     composer.addPass( effectCopy );
 
     window.addEventListener( 'resize', onWindowResize, false );
-    setInterval(function(){
+    /*setInterval(function(){
         fps = (1000/frameTime).toFixed(1);
         E1 = getDoublePendulumE();
         V1 = getDoublePendulumV1();
         V2 = getDoublePendulumV2();
         replaceHtml("info", 'FPS: '+ fps + '<br>Iterations/frame: '+ Math.round(params.iters) +'<br>Energy: ' +  Math.round(E1*100)/100 + '<br>M1 velocity: ' +  Math.round(V1*100)/100 + '<br>M2 velocity: ' +  Math.round(V2*100)/100);
         
-    },500);
+    },500);*/
 }
 
 function replaceHtml(el, html) {
