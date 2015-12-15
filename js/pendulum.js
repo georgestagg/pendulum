@@ -77,8 +77,10 @@ function init() {
 
     //GUI
     var gui = new dat.GUI();
-    gui.add(params, 'iters',10, 5000).step(10);
-    gui.add(params, 'dt',0.00001, 0.0005);
+    var f1 = gui.addFolder('Numerical Integration Settings');
+    f1.add(params, 'iters',10, 5000).step(10);
+    f1.add(params, 'dt',0.00001, 0.0005);
+
     gui.add(params, 'g',-10,20).step(0.5);
     gui.add(params, 'mass1',0.1,10).step(0.5);
     gui.add(params, 'mass2',0.1,10).step(0.5);
@@ -114,6 +116,8 @@ function init() {
     f2.add(params, 'initvphi1',-5.0,5.0).step(0.1);
     f2.add(params, 'initvphi2',-5.0,5.0).step(0.1);
     f2.add(params, 'Go');
+
+    
 
 
 
