@@ -18,7 +18,7 @@ var ParamsClass = function() {
     this.dt = 0.0001;
     this.MAX_LINE_POINTS = 500;
     this.MAX_LINE_POINTS2 = 500;
-    this.Go= function() {
+    this.Restart= function() {
     	initDoublePendulum();
     	trailj = params.MAX_LINE_POINTS
     	traili = 0;

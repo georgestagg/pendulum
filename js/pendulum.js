@@ -115,7 +115,7 @@ function init() {
     f2.add(params, 'initvtheta2',-5.0,5.0).step(0.1);
     f2.add(params, 'initvphi1',-5.0,5.0).step(0.1);
     f2.add(params, 'initvphi2',-5.0,5.0).step(0.1);
-    f2.add(params, 'Go');
+    gui.add(params, 'Restart');
 
     
 
