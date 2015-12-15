@@ -84,8 +84,8 @@ function init() {
     gui.add(params, 'g',-10,20).step(0.5);
     gui.add(params, 'mass1',0.1,10).step(0.5);
     gui.add(params, 'mass2',0.1,10).step(0.5);
-    gui.add(params, 'length1',0.1,20).step(0.5);
-    gui.add(params, 'length2',0.1,20).step(0.5);
+    gui.add(params, 'length1',0.5,20).step(0.5);
+    gui.add(params, 'length2',0.5,20).step(0.5);
 
     color1ctrl = gui.addColor(params, 'color1');
     color2ctrl = gui.addColor(params, 'color2');
