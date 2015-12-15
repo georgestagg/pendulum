@@ -16,17 +16,17 @@ function initSinglePendulum() {
 
 function initDoublePendulum() {
 	mass1 = 1.0;
-	mass2 = 0.5
-	length1 = 10.0
+	mass2 = 1.0;
+	length1 = 1.0
 	length2 = 10.0;
 	theta1 = 1.0;
 	theta2 = 2.0;
-	phi1 = 1.0;
-	phi2 = 2.5;
+	phi1 = 0.1;
+	phi2 = 0.2;
 	vtheta1 = 0.0;
 	vtheta2 = 0.0;
-	vphi1 = 1.5;
-	vphi2 = 0.0;
+	vphi1 = -0.2;
+	vphi2 = 2.2;
 }
 
 function updateSinglePendulum() {
@@ -43,10 +43,10 @@ function updateDoublePendulum() {
 	theta2 = theta2 + vtheta2*dt;
 	phi1 = phi1 + vphi1*dt;
 	phi2 = phi2 + vphi2*dt;
-	vtheta1 = vtheta1 + F[0]*dt;
-	vtheta2 = vtheta2 + F[1]*dt;
-	vphi1 = vphi1 + F[2]*dt;
-	vphi2 = vphi2 + F[3]*dt;
+	vtheta1 = (vtheta1 + F[0]*dt);
+	vtheta2 = (vtheta2 + F[1]*dt);
+	vphi1 = (vphi1 + F[2]*dt);
+	vphi2 = (vphi2 + F[3]*dt);
 }
 
 function getSinglePendulumP1() {
